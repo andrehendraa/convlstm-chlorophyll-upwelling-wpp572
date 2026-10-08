@@ -1,0 +1,13 @@
+numpy
+pandas
+xarray
+netCDF4
+geopandas
+shapely
+scipy
+scikit-learn
+statsmodels
+matplotlib
+seaborn
+tensorflow
+optuna
