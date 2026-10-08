@@ -1,0 +1,23 @@
+# Data (download from source, see data/README.md)
+data/*
+!data/README.md
+*.zip
+*.nc
+
+# Model files
+*.h5
+*.keras
+*.pt
+*.pkl
+
+# Python / Jupyter
+__pycache__/
+.ipynb_checkpoints/
+.venv/
+venv/
+.env
+
+# OS
+Thumbs.db
+desktop.ini
+.DS_Store
