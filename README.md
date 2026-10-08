@@ -11,7 +11,7 @@ WPP-NRI 572 is a strategic fisheries area in the Indian Ocean, west of Sumatra. 
 - Variables: Chlorophyll-a (`chlor_a`) and Sea Surface Temperature (SST)
 - Dimensions: time × latitude × longitude
 - Temporal resolution: 8-day composite, 2014–2024
-- Spatial resolution: [TODO: 4 km / 9 km]
+- Spatial resolution: 4 km
 - Area: WPP-NRI 572, 90°E–110°E, 10°S–7°N
 - Raw data is not included; see `data/README.md`.
 
@@ -83,6 +83,13 @@ Adding the spatial mask as an extra input channel reduced prediction error compa
 - Upwelling events peak in September and remain high through December; offshore waters west of Sumatra (central to southern WPP-NRI 572) show the highest accumulation.
 - Potential fishing ground zones are concentrated around 96°E–103°E and 8°S–2°S, covering the central–southern west coast of Sumatra, the Sunda Strait, and the offshore area to the west.
 - January 2025 is the most prominent period in the forecast.
+
+## Limitations & What I Learned
+- **Gap filling introduced extreme values.** 3D-DINEOF preserved the mean and median of chlorophyll-a but raised the maximum from 85.9 to 1,212.9 mg/m³, likely because SVD is sensitive to outliers. Lesson: handle outliers *before* reconstruction, not after.
+- **Compute constraints limited the search.** Batch size was fixed at 2, the model used 3 ConvLSTM layers, and timesteps were capped at 8 to avoid out-of-memory errors. Longer timesteps may capture seasonal patterns better.
+- **Tuning did not beat the baseline.** Likely causes are a limited number of trials, a narrow search space, and a 90:5:5 split that leaves small validation and test sets. Lesson: choose the final model on test performance, not validation loss alone.
+- **Long-horizon forecasts flatten out.** Recursive forecasting accumulates error, and predictions become nearly flat after January 2025. Periodic refitting on new observations would help.
+- **No ground-truth validation.** Fishing ground zones are based on oceanographic conditions only and have not been validated against actual catch data.
 
 ## Report
 Full thesis: [docs/paper.pdf](docs/paper.pdf)
